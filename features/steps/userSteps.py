@@ -1,26 +1,21 @@
-from compare import expect
+from compare import *
+from utils.module_rest import *
 
-@given(u'I have a username "{username}"')
-def step_impl(context, username):
-    context.username = username
-    print(context.username)
-    expect(context.username).to_equal(username)
-
-
-
-@given(u'I have a token "{token}"')
-def step_impl(context, token):
-    context.token = token
-    print(context.token)
-    expect(context.token).to_equal(token)
-
-@when(u'I GET  my request to success')
+@given(u'I have a user authenticated')
 def step_impl(context):
     pass
 
+@given(u'I have service for "{serviceMethod}"')
+def step_impl(context, serviceMethod ):
+    context.serviceMethod = serviceMethod
 
-@then(u'I receive status code {response} for the response')
-def step_impl(context, response):
-    context.response = response
-    print(context.response)
-    expect(context.response).to_equal(int(response))
+@when(u'I send {method} user request to have user information')
+def step_impl(context, method):
+    context.method = method
+    url = context.host + context.rootPath + context.serviceMethod
+    headers = context.authorization
+    context.response = perform_request(context.method, url,headers)
+
+@then(u'I receive status code {status_code} for the response')
+def step_impl(context, status_code):
+    expect(int(status_code)).to_equal(context.response.status_code)

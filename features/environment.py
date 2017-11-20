@@ -8,6 +8,7 @@ def before_all(context):
     context.host   = generic_data['host']
     context.rootPath = generic_data['rootPath']
     context.token   = generic_data['token']
+    context.authorization = generic_data['authorization']
     context.user = generic_data['user']
     print(context.host, context.rootPath, context.token, context.user)
 
