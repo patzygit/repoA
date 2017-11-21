@@ -1,20 +1,22 @@
 import requests
 import json
 
-def perform_get_request(host,headers=None):
-       r = requests.get(host,headers=headers)
-       return r.json()
+def perform_get_request(host, headers=None):
+    r = requests.get(host, headers=headers)
+    return r.json()
 
-def perform_request(method, endpoint,body=None,headers=None):
-	##enpoint shoudl eb already completed
+def perform_request(method, endpoint, body='', headers=''):
     if method == 'GET':
-	    result= requests.get(endpoint,headers)
-    elif method == 'POST':
-	    result= requests.post(endpoint, payload=body, headers=headers)
-
+	    result = requests.get(endpoint, headers=headers)
+    if method == 'POST':
+	    result = requests.post(endpoint, payload=body, headers=headers)
+    if method == 'PUT':
+        result = requests.put(endpoint, payload=body, headers=headers)
+    if method == 'DELETE':
+        result = requests.delete(endpoint, headers=headers)
     return result
 
-def add_headers(host):
-    url = 'https://api.github.com/some/endpoint'
-    headers = {'user-agent': 'my-app/0.0.1'}
-    r = requests.get(url, headers=headers)
+def generateFileJson(path, fileName, data):
+    filePathNameWExt = path + fileName + '.json'
+    with open(filePathNameWExt, 'w') as fp:
+        json.dump(data, fp)
