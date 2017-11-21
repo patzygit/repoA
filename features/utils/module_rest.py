@@ -5,7 +5,7 @@ def perform_get_request(host, headers=None):
     r = requests.get(host, headers=headers)
     return r.json()
 
-def perform_request(method, endpoint, body=None, headers=None):
+def perform_request(method, endpoint, body='', headers=''):
     if method == 'GET':
 	    result = requests.get(endpoint, headers=headers)
     if method == 'POST':
