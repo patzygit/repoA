@@ -1,5 +1,4 @@
 host: https://Todo.ly
-rootPath: /API
-user: qa.testing.dgs@gmail.com
-token: 7aa42a278db04c46a7fc424bf64acd31
-authorization: "Authorization: Basic cWEudGVzdGluZy5kZ3NAZ21haWwuY29tOmRpZWdvMTk4Nw=="
+rootPath: /api
+#token: 7aa42a278db04c46a7fc424bf64acd31
+token: {"Authorization" : "Basic cWEudGVzdGluZy5kZ3NAZ21haWwuY29tOmRpZWdvMTk4Nw=="}

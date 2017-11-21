@@ -1,4 +1,4 @@
-@userFeature
+@userFeature @smoke
 Feature: User
 
   @getuser
