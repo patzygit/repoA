@@ -13,8 +13,11 @@ def step_impl(context, serviceMethod ):
 def step_impl(context, method):
     context.method = method
     url = context.host + context.rootPath + context.serviceMethod
-    headers = context.authorization
-    context.response = perform_request(context.method, url,headers)
+    headers = context.token
+    context.response = perform_request(context.method, url, headers)
+
+    print(context.response.json())
+    generateFileJson("data/", "data_user", context.response.json())
 
 @then(u'I receive status code {status_code} for the response')
 def step_impl(context, status_code):
