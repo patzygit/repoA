@@ -23,8 +23,6 @@ Examples:
 |Id|
 |10048278|
 
-
-
   @getitem
 Scenario Outline: Get root parent for unchecked item
 	Given I have a service with root id "/items/<Id>/RootItem.json"
@@ -91,3 +89,29 @@ Scenario: Add item
           "OwnerId": 589936
       }
       """
+  @deleteitem
+Scenario Outline: Delete item
+	Given I have a service for "/items/<Id>.json"
+	When I send DELETE items request to delete an item
+	Then I receive status code 200 for the response
+    #Deleted": true
+Examples:
+|Id|
+|10049715|
+
+  @updateitem
+Scenario Outline: Add item
+	Given I have a service for "/items/<Id>.json"
+	And I have a updateBody
+      """
+      {
+        "Content":"Item - updated paty4"
+      }
+      """
+	When I send PUT items request to update a new item
+	Then I receive status code 200 for the response
+      #And I got response body of new item
+
+Examples:
+|Id|
+|10049599|
