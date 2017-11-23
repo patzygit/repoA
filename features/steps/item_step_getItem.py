@@ -58,7 +58,7 @@ def step_impl(context, method):
     context.url      = context.host + context.rootPath + context.servicemethod
     context.headers  = context.token
     context.response = perform_request(context.method, context.url, context.headers)
-    print ("rootId",context.response)
+    #print ("rootId",context.response)
     generateFileJson("data/", "dataRootIdItems", context.response.json())
 
 @then(u'response body should contain item information of unchecked item as')
@@ -84,3 +84,12 @@ def step_impl(context, method):
     #print ("////", context.response_dr)
     print("////status", context.response.status_code)
    # generateFileJson("data/", "dataDoneRootIdItems", context.response_dr.json())
+
+@when(u'I send {method} items request to delete an item')
+def step_impl(context, method):
+    context.method   = method
+    context.url      = context.host + context.rootPath + context.servicemethod
+    context.headers  = context.token
+    context.response = perform_request(context.method, context.url, context.headers)
+    print ("rootId",context.response)
+    generateFileJson("data/", "dataDeleteIdItem", context.response.json())
