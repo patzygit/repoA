@@ -15,7 +15,7 @@ def perform_request(method, endpoint, headers='', body=''):
 	    result = requests.post(endpoint, headers=headers,json=body)
        # print ("resutl", result)
     if method == 'PUT':
-        result = requests.put(endpoint, payload=body, headers=headers)
+        result = requests.put(endpoint, json=body, headers=headers)
     if method == 'DELETE':
         result = requests.delete(endpoint, headers=headers)
     return result
