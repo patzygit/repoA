@@ -6,19 +6,47 @@ As ToDo user
  If an Item doesn’t have a Project assigned to it, it only displayed in the Inbox.
  Projects can be in hierarchy containing other projects.
 
-  @getprojects
+Background: User authenticated
+    Given I have a new user authenticated
+
+@smoke
+Scenario: Create New Project
+ Given I have a service of "/projects.json"
+ When I send "POST" project request
+ Then I receive the status code "200" for the response
+
+@smoke
 Scenario: Get All Projects
- Given I am an authenticated user
- When I call the method GET_Project
- Then I receibe a status code 200
-  And a list of all projects and subprojects should be displayed
+ Given I have a service of "/projects.json"
+ When I send "GET" project request
+ Then I receive the status code "200" for the response
 
-Scenario: Create a new Project
- Given I am an authenticated user
-  And I have a new proyect (AprobarLaMateria)
- When I call the method Create_New_Project
-  And I indicate the project name and an Icon
- Then I receibe a status code 200
-  And A new proyect should be created
+ @smoke
+Scenario: Get Project By Id
+ Given I have a service of "/projects/3662858.json"
+ When I send "GET" project request
+ Then I receive the status code "200" for the response
 
- 
+@smoke
+Scenario: Update Project By Id
+ Given I have a service of "/projects/3662858.json"
+ When I send "PUT" project request
+ Then I receive the status code "200" for the response
+
+@smoke
+Scenario: Delete Project By Id
+ Given: I have a service of "/projects/3662858.json"
+ When: I send "DELETE" project request
+ Then: I receive the status code "200" for the response
+
+@smoke
+Scenario: Get Items of a Project
+ Given I have a service of "/projects/3662858/items.json"
+ When I send "GET" project request
+ Then I receive the status code "200" for the response
+
+@smoke
+Scenario: Get Done Items of a Project
+ Given I have a service of "/projects/3662858/doneitems.json"
+ When I send "GET" project request
+ Then I receive the status code "200" for the response
