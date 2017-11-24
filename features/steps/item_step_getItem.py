@@ -1,8 +1,7 @@
 from compare import *
-from jsondiff import diff
 from utils.json_order import *
-
 from utils.module_rest import *
+from utils.file_system import *
 from behave import given, when, then
 
 @given(u'I have a service for "{servicemethod}"')
@@ -16,7 +15,7 @@ def step_impl(context,method):
     context.url      = context.host + context.rootPath + context.servicemethod
     context.headers  = context.token
     context.response = perform_request(context.method, context.url, context.headers)
-    generateFileJson("data/", "dataAllItems", context.response.json())
+    generateFileJson("data/", "Item_GETAllItems", context.response.json())
 
 #/items/10048278.json
 @given(u'I have a service with id "{servicemethod}"')
@@ -29,23 +28,16 @@ def step_impl(context, method):
     context.url      = context.host + context.rootPath + context.servicemethod
     context.headers  = context.token
     context.response = perform_request(context.method, context.url, context.headers)
-    generateFileJson("data/", "dataIdItems", context.response.json())
+    generateFileJson("data/", "Item_GETIdItems", context.response.json())
 
-@then(u'response body should contain item information of specified item as')
-def step_impl(context):
-    context.response_get = json.loads(context.text)
-    #print ("***//data", context.response_get)
-    #print ("repons -re " , context.response.json())
-    boolean = ordered(context.response_get) != ordered(context.response.json())
-    #print ("bool",boolean)
-    assert boolean == True
+@then(u'response body should be the same of "{rootFileRIdItem}" with "{rootGetRequest}" for specific item')
+def step_impl(context,rootFileRIdItem,rootGetRequest):
+    context.rootpathDataFile = FileSystem(rootFileRIdItem)
+    context.dataFile = FileSystem(rootGetRequest)
+    context.dataFile._print_structure_json
+    boolean = context.dataFile._compare_to(context.dataFile._get_DataJson(),context.rootpathDataFile._get_DataJson())
+    assert boolean != True
  #   expect(int(context.response_get)).to_equal(context.response.json())
-
-@then(u'response body should empty of specified item as')
-def step_impl(context):
- a=diff(context.text,context.response)
- print ("text", a)
- expect(a).to_equal({})
 
 #/items/10028551/RootItem.json
 @given(u'I have a service with root id "{servicemethod}"')
@@ -59,22 +51,21 @@ def step_impl(context, method):
     context.headers  = context.token
     context.response = perform_request(context.method, context.url, context.headers)
     #print ("rootId",context.response)
-    generateFileJson("data/", "dataRootIdItems", context.response.json())
+    generateFileJson("data/", "Item_GETRootIdItems", context.response.json())
 
-@then(u'response body should contain item information of unchecked item as')
-def step_impl(context):
-    context.response_get = json.loads(context.text)
-    #print ("***//data", context.response_get)
-    #print ("repons -re " , context.response.json())
-    boolean = ordered(context.response_get) != ordered(context.response.json())
-    #print ("bool",boolean)
-    assert boolean == True
+@then(u'response body should be the same of "{rootFileRIdItem}" with "{rootGetRequest}" for unchecked item')
+def step_impl(context,rootFileRIdItem,rootGetRequest):
+    context.rootpathDataFile = FileSystem(rootFileRIdItem)
+    context.dataFile = FileSystem(rootGetRequest)
+    context.dataFile._print_structure_json
+    bool = context.dataFile._compare_to(context.dataFile._get_DataJson(),context.rootpathDataFile._get_DataJson())
+    assert bool != True
 
 #/items/10048278/DoneRootItem.json
 @given(u'I have a service with item id "{servicemethod}"')
 def step_impl(context, servicemethod):
     context.servicemethod = servicemethod
-#failed
+
 @when(u'I send {method} item request to get an error for done item that does not exist')
 def step_impl(context, method):
     context.method   = method
@@ -85,11 +76,3 @@ def step_impl(context, method):
     print("////status", context.response.status_code)
    # generateFileJson("data/", "dataDoneRootIdItems", context.response_dr.json())
 
-@when(u'I send {method} items request to delete an item')
-def step_impl(context, method):
-    context.method   = method
-    context.url      = context.host + context.rootPath + context.servicemethod
-    context.headers  = context.token
-    context.response = perform_request(context.method, context.url, context.headers)
-    print ("rootId",context.response)
-    generateFileJson("data/", "dataDeleteIdItem", context.response.json())

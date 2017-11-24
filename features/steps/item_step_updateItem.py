@@ -15,4 +15,13 @@ def step_impl(context, putmethod):
     context.headers = context.token
     context.pyloadrequest = context.updateToBody
     context.response = perform_request(context.method, context.url, context.headers, context.pyloadrequest)
-    generateFileJson("data/", "dataUpdateItem", context.response.json())
+    generateFileJson("data/", "Item_PUTUpdateItem", context.response.json())
+
+
+@then(u'I recieve {updatedParameter} parameter for item with {description}')
+def step_impl(context, updatedParameter, description):
+    print("upParameter",updatedParameter)
+    print("description",description)
+    result = context.response.json()
+    print("result",result[updatedParameter])
+    expect(str(description)).to_equal(result[updatedParameter])
